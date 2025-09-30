@@ -1,0 +1,30 @@
+// Example Bootstrap import
+@import "~bootstrap/dist/css/bootstrap";
+
+/* Card styling */
+.login-card {
+  background: white;
+  width: 500px;           /* बड़ा card */
+  padding: 3rem;          /* padding बढ़ाया */
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Headings and text bold */
+.login-card h1, .login-card p, .login-card label {
+  font-weight: 700;      /* Bold text */
+}
+
+/* Buttons bigger */
+.login-card .btn {
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 0.8rem 0;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}

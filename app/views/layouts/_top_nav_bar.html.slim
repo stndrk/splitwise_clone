@@ -1,0 +1,66 @@
+nav.navbar.navbar-expand-md.navbar-dark.bg-dark.fixed-top
+  .container-fluid
+    a.navbar-brand href= root_path
+      | Splitwise
+
+    button.navbar-toggler type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"
+      span.navbar-toggler-icon
+
+    .collapse.navbar-collapse#navbarCollapse
+      ul.navbar-nav.ms-auto
+        li.nav-item.dropdown
+          a#accountDropdown.nav-link href="javascript:void(0)" role="button"
+            | Account
+          ul#accountMenu.dropdown-menu.dropdown-menu-end
+            li
+              = link_to person_path(current_user.id), class: "dropdown-item" do
+                | Profile
+            li
+              = link_to destroy_user_session_path, method: :delete, class: "dropdown-item" do
+                i.icon-logout.font-size-20.me-2
+                | Logout
+
+/ Inline JS for toggling dropdown - correct Slim syntax
+script
+  | document.addEventListener("DOMContentLoaded", function() {
+  |   var toggle = document.getElementById("accountDropdown");
+  |   var menu = document.getElementById("accountMenu");
+  |
+  |   toggle.addEventListener("click", function(e) {
+  |     e.preventDefault();
+  |     menu.classList.toggle("show");
+  |   });
+  |
+  |   document.addEventListener("click", function(e) {
+  |     if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+  |       menu.classList.remove("show");
+  |     }
+  |   });
+  | });
+
+/ Optional CSS inline in Slim
+style
+  | #accountMenu {
+  |   display: none;
+  |   position: absolute;
+  |   right: 0;
+  |   background-color: #343a40;
+  |   min-width: 150px;
+  |   padding: 0.25rem 0;
+  |   border-radius: 0.25rem;
+  |   z-index: 1000;
+  | }
+  | #accountMenu.show {
+  |   display: block;
+  | }
+  | #accountMenu .dropdown-item {
+  |   color: #f8f9fa;
+  |   padding: 0.25rem 1rem;
+  | }
+  | #accountMenu .dropdown-item:hover {
+  |   background-color: #495057;
+  |   color: #fff;
+  | }
+  | #accountDropdown {
+  |   cursor: pointer;
+  | }

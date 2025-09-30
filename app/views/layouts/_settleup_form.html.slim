@@ -1,0 +1,45 @@
+/ --- Settle Up Modal ---
+.modal.fade#settleUpModal tabindex="-1" aria-labelledby="settleUpModalLabel" aria-hidden="true"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        h5.modal-title#settleUpModalLabel Settle Up
+        button.btn-close type="button" data-bs-dismiss="modal" aria-label="Close"
+
+      .modal-body
+         = form_with url: settlement_create_path, method: :post, local: true, id: "settleup-form" do |f|
+          
+          .mb-3
+            = f.label :to_user_id, "Select Friend"
+            = select_tag :to_user_id, options_from_collection_for_select(@friends, :id, :name), include_blank: "Choose...", class: "form-select", id: "recipient-select"
+
+          .mb-3
+            = f.label :amount, "Amount"
+            = f.number_field :amount, step: "0.01", class: "form-control", placeholder: "Amount will auto populate", id: "settleup-amount"
+
+          .mb-3
+            = f.label :description, "Note (optional)"
+            = f.text_area :description, class: "form-control", rows: 2, placeholder: "Add a note"
+
+          .modal-footer
+            button.btn.btn-secondary type="button" data-bs-dismiss="modal" Close
+            = f.submit "Settle Up", class: "btn btn-primary"
+
+/ --- JavaScript ---
+script
+  | document.addEventListener("DOMContentLoaded", function() {
+  |   var recipientSelect = document.getElementById("recipient-select");
+  |   var amountField = document.getElementById("settleup-amount");
+  |
+  |   recipientSelect.addEventListener("change", function() {
+  |     var userId = recipientSelect.value;
+  |     if(!userId) { amountField.value = ""; return; }
+  |
+  |     fetch("/settlement/amount?friend_id=" + userId)
+  |       .then(function(response){ return response.json(); })
+  |       .then(function(data){ 
+  |         amountField.value = (data.amount != null && data.amount >= 0) ? data.amount : ""; 
+  |       })
+  |       .catch(function(){ amountField.value = ""; });
+  |   });
+  | });

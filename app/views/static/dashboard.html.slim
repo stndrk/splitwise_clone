@@ -1,0 +1,89 @@
+.dashboard-wrapper.d-flex
+  / Sidebar
+  aside.side-bar-area.bg-light.p-3
+    h4.mb-3 Friends List
+    .d-flex.flex-column.gap-2
+      - @friends.each do |friend|
+        - balance = @friends_balances[friend.id] || {}
+        - amt = balance[:amount_friend_pay_current_usr].to_f
+        - display_amt = amt.zero? ? "₹0" : (amt > 0 ? "+ $#{amt}" : "- $#{amt.abs}")
+
+        span.badge.d-flex.justify-content-between.align-items-center.bg-light.text-dark.px-3.py-2.rounded-pill.shadow-sm.border
+          strong= friend.name 
+          span.badge.rounded-pill style="font-size:13px;" class=(amt > 0 ? "bg-success" : (amt < 0 ? "bg-danger" : "bg-secondary"))
+            = display_amt
+
+  / Main content
+  .main-area.flex-grow-1.p-3
+    / Top bar
+    .d-flex.justify-content-between.align-items-center.mb-4
+      h1.mb-0 Dashboard
+      .btn-group
+        button.btn.btn-primary type="button" data-bs-toggle="modal" data-bs-target="#expenseModal"
+          | Add Expense
+        button.btn.btn-success type="button" data-bs-toggle="modal" data-bs-target="#settleUpModal"
+          | Settle Up
+
+    / Balances Cards Section
+    .row.mb-2.g-3
+      .col-md-4
+        .card.text-center.shadow.rounded.p-3.bg-primary.text-white
+          .card-body
+            h5.card-title Total Balance
+            - if @total_balance > 0
+              p.h3.fw-bold= number_to_currency(@total_balance)
+            - elsif @total_balance < 0
+              p.h3.fw-bold= number_to_currency(@total_balance)
+            - else
+              p.h3.fw-bold.text-light= number_to_currency(@total_balance)
+      .col-md-4
+        .card.text-center.shadow.rounded.p-3.bg-danger.text-white
+          .card-body
+            h5.card-title Total You Owe
+            - if @total_you_owe > 0
+              p.h3.fw-bold= number_to_currency(@total_you_owe)
+            - else
+              p.h3.fw-bold.text-light= number_to_currency(@total_you_owe)
+      .col-md-4
+        .card.text-center.shadow.rounded.p-3.bg-success.text-white
+          .card-body
+            h5.card-title Total Due To You
+            - if @total_due_to_you > 0
+              p.h3.fw-bold= number_to_currency(@total_due_to_you)
+            - else
+              p.h3.fw-bold.text-light= number_to_currency(@total_due_to_you)
+
+    / Recent Expenses per Friend
+    .card.shadow-sm
+      .card-header.text-white style="background-color: #565e64;" Friends Expenses
+      .card-body
+        - @friends.each do |friend|
+          - expenses = friend.expense_records
+          - if expenses.any?
+            h5.mt-3= friend.name
+            ul.list-group.mb-2
+              - expenses.each do |expense|
+                li.list-group-item.d-flex.justify-content-between.align-items-center
+                  span= "#{expense.created_at.strftime('%d-%b-%Y')} | #{expense.description}"
+                  span.font-weight-bold.text-success= "$#{'%.2f' % expense.amount}"               
+
+  / --- Add Expense Modal Partial ---
+  = render 'layouts/expense_form'
+
+  / --- Add Expense Modal Partial ---
+  = render 'layouts/settleup_form'
+
+style
+  | .side-bar-area ul.list-group { padding: 0; margin: 0; }
+  | .side-bar-area .list-group-item { width: 100%; }
+  | .side-bar-area .list-group-item a {
+  |   display: block;
+  |   min-width: 120px;
+  |   position: relative;
+  |   text-decoration: none;
+  |   color: inherit;
+  |   border-radius: 0.25rem;
+  |   transition: background-color 0.2s;
+  | }
+  | .side-bar-area .list-group-item a:hover { background-color: #e2e6ea; }
+  | .side-bar-area .list-group-item a.active { background-color: #e2e6ea; font-weight: 600; } 

@@ -1,0 +1,11 @@
+<% if resource.errors.any? %>
+  <% bootstrap_class = "alert alert-danger" %>
+  <div class="<%= bootstrap_class %>" role="alert">
+    <p style="font-size: 15px; font-weight: bold; margin-bottom: 10px;">
+      <%= "#{pluralize(resource.errors.count, 'error')} prohibited this #{resource.class.model_name.human.downcase} from being saved:" %>
+      <span style="font-size: 16px; font-weight: normal; margin-left: 10px;">
+        <%= resource.errors.full_messages.join(", ") %>
+      </span>
+    </p>
+  </div>
+<% end %>

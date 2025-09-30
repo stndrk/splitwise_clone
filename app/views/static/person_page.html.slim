@@ -1,0 +1,69 @@
+.dashboard-wrapper
+  / Sidebar
+  aside.side-bar-area.bg-light.p-3
+    h4.mb-3 Friends List
+    .d-flex.flex-column.gap-2
+      / “You” badge, initially active
+      span.badge.friend-link.px-4.py-2.rounded-pill.shadow-sm.bg-primary.text-white.active data-friend-id="me" You
+
+      - @friends.each do |friend|
+        span.badge.friend-link.px-4.py-2.rounded-pill.shadow-sm.bg-info.text-dark data-friend-id=friend.id
+          = friend.name
+
+  / Main content
+  .main-area.flex-grow-1.p-3
+    .d-flex.justify-content-between.align-items-center.mb-4
+      h1.mb-0 Profile
+      .btn-group
+        button.btn.btn-secondary type="button" data-bs-toggle="modal" data-bs-target="#groupModal" Create Group
+        button.btn.btn-primary type="button" data-bs-toggle="modal" data-bs-target="#expenseModal" Add Expense
+        button.btn.btn-success type="button" data-bs-toggle="modal" data-bs-target="#settleUpModal" Settle Up
+
+    / Expenses container
+    .card.shadow-sm
+      .card-header.text-white style="background-color: #565e64;" Expenses
+      .card-body#expenses-container
+        = render partial: "layouts/expenses_list", locals: { expenses: @expenses, user_id: current_user.id }
+
+    / --- Render Modals ---
+    = render 'layouts/expense_form'
+    = render 'layouts/settleup_form'
+    = render 'layouts/group_form'
+
+  / CSS for active/inactive badges
+  style
+    |
+      .friend-link {
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+      .friend-link.active {
+        background-color: #0d6efd !important; /* blue */
+        color: #fff !important;
+      }
+      .friend-link:not(.active) {
+        background-color: #17a2b8 !important; /* Inactive cyan */
+        color: #fff !important;
+      }
+
+  / JS for dynamic loading and active class
+  script
+    | document.addEventListener("DOMContentLoaded", function() {
+    |   const friendLinks = document.querySelectorAll(".friend-link");
+    |   const expensesContainer = document.getElementById("expenses-container");
+    |
+    |   friendLinks.forEach(link => {
+    |     link.addEventListener("click", function() {
+    |       friendLinks.forEach(el => el.classList.remove("active"));
+    |       this.classList.add("active");
+    |
+    |       const friendId = this.dataset.friendId;
+    |       const url = friendId === "me" ? "/expense/me" : `/expense/${friendId}`;
+    |
+    |       fetch(url)
+    |         .then(res => res.text())
+    |         .then(html => expensesContainer.innerHTML = html)
+    |         .catch(err => console.error(err));
+    |     });
+    |   });
+    | });

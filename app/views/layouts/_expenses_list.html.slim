@@ -1,0 +1,10 @@
+- if expenses.present?
+  - name = user_id.to_s == "me" ? "You" : User.find(user_id).name
+  h5.mt-3= name
+  ul.list-group.mb-2
+    - expenses.each do |expense|
+      li.list-group-item.d-flex.justify-content-between.align-items-center
+        span= "#{expense.created_at.strftime('%d-%b-%Y')} | #{expense.description}"
+        span.font-weight-bold.text-success= "$#{'%.2f' % expense.amount}"
+- else
+  p.text-muted No expenses yet.
