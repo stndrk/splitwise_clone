@@ -5,7 +5,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.0.0"
 
-gem "bootsnap", ">= 1.4.4", require: false
+# gem 'bootsnap', '>= 1.21.0', require: false
+gem 'concurrent-ruby', '~> 1.2'
 gem "devise"
 gem "jbuilder", "~> 2.7"
 gem "pg"
@@ -27,7 +28,7 @@ group :development do
   gem "faker"
   gem "listen", "~> 3.3"
   gem "rack-mini-profiler", "~> 2.0"
-  gem "spring"
+  gem 'spring', '~> 4.3.0'
   gem "web-console", ">= 4.1.0"
 end
 
