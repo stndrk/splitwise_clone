@@ -19,9 +19,9 @@
     .d-flex.justify-content-between.align-items-center.mb-4
       h1.mb-0 Dashboard
       .btn-group
-        button.btn.btn-primary type="button" data-bs-toggle="modal" data-bs-target="#expenseModal"
+        button.btn.btn-primary type="button" data-bs-toggle="offcanvas" data-bs-target="#expenseOffcanvas"
           | Add Expense
-        button.btn.btn-success type="button" data-bs-toggle="modal" data-bs-target="#settleUpModal"
+        button.btn.btn-success type="button" data-bs-toggle="offcanvas" data-bs-target="#settleUpOffcanvas"
           | Settle Up
 
     / Balances Cards Section
@@ -65,13 +65,23 @@
               - expenses.each do |expense|
                 li.list-group-item.d-flex.justify-content-between.align-items-center
                   span= "#{expense.created_at.strftime('%d-%b-%Y')} | #{expense.description}"
-                  span.font-weight-bold.text-success= "$#{'%.2f' % expense.amount}"               
+                  span.font-weight-bold.text-success= "$#{'%.2f' % expense.total_amount}"               
 
-  / --- Add Expense Modal Partial ---
-  = render 'layouts/expense_form'
+  / --- Add Expense Offcanvas ---
+  #expenseOffcanvas.offcanvas.offcanvas-end style="top: 57px; width: 24%;" tabindex="-1" aria-labelledby="expenseOffcanvasLabel"
+    .offcanvas-header.bg-primary.text-white
+      h5#expenseOffcanvasLabel.offcanvas-title Add Expense
+      button.btn-close.text-reset type="button" data-bs-dismiss="offcanvas" aria-label="Close"
+    .offcanvas-body
+      = render 'layouts/expense_form'
 
-  / --- Add Expense Modal Partial ---
-  = render 'layouts/settleup_form'
+  / --- Settle Up Offcanvas ---
+  #settleUpOffcanvas.offcanvas.offcanvas-end style="top: 57px; width: 24%;" tabindex="-1" aria-labelledby="settleUpOffcanvasLabel"
+    .offcanvas-header.bg-success.text-white
+      h5#settleUpOffcanvasLabel.offcanvas-title Settle Up
+      button.btn-close.text-reset type="button" data-bs-dismiss="offcanvas" aria-label="Close"
+    .offcanvas-body
+      = render 'layouts/settleup_form'
 
 style
   | .side-bar-area ul.list-group { padding: 0; margin: 0; }

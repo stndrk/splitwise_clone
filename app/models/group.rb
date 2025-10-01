@@ -12,19 +12,17 @@ class Group < ApplicationRecord
 
   #==============================*****MODEL METHODS*****==============================
   def self.create_with_members(params, creator)
-    group = new(params)
-    group.created_by = creator
-    group.admin = creator
+    group = new(name: params[:name], description: params[:description], created_by: creator, admin: creator)
 
-    if group.save
-      member_ids = params[:member_ids].reject(&:blank?)
-      group.add_members(member_ids)
+    Group.transaction do
+      group.save!
+      member_ids = Array(params.dig(:group, :member_ids)).reject(&:blank?).map(&:to_i)
+      member_ids << creator.id unless member_ids.include?(creator.id)
+      member_ids.each { |uid| group.group_memberships.create!(user_id: uid, active: true) }
     end
 
     group
-  end
-
-  def add_members(user_ids)
-    user_ids.each { |uid| group_memberships.create(user_id: uid, active: true) }
+  rescue ActiveRecord::RecordInvalid
+    nil
   end
 end

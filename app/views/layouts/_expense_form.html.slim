@@ -1,61 +1,50 @@
-#expenseModal.modal.fade tabindex="-1" aria-labelledby="expenseModalLabel" aria-hidden="true"
-  .modal-dialog.modal-dialog-centered.modal-lg
-    .modal-content
-      .modal-header.bg-primary.text-white
-        h5#expenseModalLabel.modal-title.mb-0 Add Expense
-        button.btn-close.btn-close-white type="button" data-bs-dismiss="modal" aria-label="Close"
-
-      = form_with url: expense_create_path, local: true, html: { id: "expense-form" } do |f|
-        .modal-body
-          / --- Recipient Dropdown with groups and friends ---
-          .mb-4
-            = f.label :recipient, "Select Group / Friends", class: "form-label fw-bold"
-            ul.list-group#recipient-list style="max-height:200px; overflow-y:auto; padding-left:0;"
-              - if @groups_with_members.any?
-                li.list-group-item.bg-light Groups:
-                - @groups_with_members.each do |group_label, members|
-                  li.list-group-item
-                    = radio_button_tag 'expense[group_id]', group_label.split("-").last, false, class: "group-radio", data: { members: members.to_json }
-                    = label_tag "group-#{group_label.split('-').last}", group_label.split('-').first
-              - if @friends.any?
-                li.list-group-item.bg-light Friends:
-                - @friends.each do |friend|
-                  li.list-group-item
-                    = check_box_tag "friend-checkbox", friend.id, false, class: "friend-checkbox"
-                    = label_tag "friend-#{friend.id}", friend.name
+= form_with url: expense_create_path, local: true, html: { id: "expense-form" } do |f|
+  .mb-4
+    = f.label :recipient, "Select Group / Friends", class: "form-label fw-bold"
+    ul.list-group#recipient-list style="max-height:200px; overflow-y:auto; padding-left:0;"
+      - if @groups_with_members.any?
+        li.list-group-item.bg-light Groups:
+        - @groups_with_members.each do |group_label, members|
+          li.list-group-item
+            = radio_button_tag 'expense[group_id]', group_label.split("-").last, false, class: "group-radio", data: { members: members.to_json }
+            = label_tag "group-#{group_label.split('-').last}", group_label.split('-').first
+      - if @friends.any?
+        li.list-group-item.bg-light Friends:
+        - @friends.each do |friend|
+          li.list-group-item
+            = check_box_tag "friend-checkbox", friend.id, false, class: "friend-checkbox"
+            = label_tag "friend-#{friend.id}", friend.name
 
           / --- Expense Details ---
-          .mb-3
-            = f.label :description, "Description", class:"form-label"
-            = f.text_field :description, name:"expense[description]", class:"form-control", placeholder:"Lunch, Taxi, etc."
-          .mb-3
-            = f.label :amount, "Total Amount", class:"form-label"
-            = f.number_field :amount, name:"expense[amount]", step:"0.01", class:"form-control", placeholder:"Total amount"
-          .mb-3
-            = f.label :tax, "Tax", class:"form-label"
-            = f.number_field :tax, name:"expense[tax]", step:"0.01", class:"form-control", placeholder:"Tax amount"
-          .mb-3
-            = f.label :tip, "Tip", class:"form-label"
-            = f.number_field :tip, name:"expense[tip]", step:"0.01", class:"form-control", placeholder:"Tip amount"
-          .mb-3
-            = f.label :split_type, "Split Type", class:"form-label"
-            = f.select :split_type, [["Equal", "equal"], ["Manual (Exact)", "exact"]], {}, { class:"form-select", id:"split-type" }
+  .mb-3
+    = f.label :description, "Description", class:"form-label"
+    = f.text_field :description, name:"expense[description]", class:"form-control", placeholder:"Lunch, Taxi, etc."
+  .mb-3
+    = f.label :amount, "Total Amount", class:"form-label"
+    = f.number_field :amount, name:"expense[amount]", step:"0.01", class:"form-control", placeholder:"Total amount"
+  .mb-3
+    = f.label :tax, "Tax", class:"form-label"
+    = f.number_field :tax, name:"expense[tax]", step:"0.01", class:"form-control", placeholder:"Tax amount"
+  .mb-3
+    = f.label :tip, "Tip", class:"form-label"
+    = f.number_field :tip, name:"expense[tip]", step:"0.01", class:"form-control", placeholder:"Tip amount"
+  .mb-3
+    = f.label :split_type, "Split Type", class:"form-label"
+    = f.select :split_type, [["Equal", "equal"], ["Manual (Exact)", "exact"]], {}, { class:"form-select", id:"split-type" }
 
           / --- Participant Split Table ---
-          table.table.table-bordered.table-hover.mt-3#split-table style="display:none;"
-            thead.bg-secondary.text-white
-              tr
-                th Participant
-                th.text-center Amount
-            tbody
+  table.table.table-bordered.table-hover.mt-3#split-table style="display:none;"
+    thead.bg-secondary.text-white
+      tr
+        th Participant
+        th.text-center Amount
+    tbody
 
           / --- Hidden inputs for participants ---
-          #participants-container
+  #participants-container
 
-        / --- Footer Buttons ---
-        .modal-footer
-          button.btn.btn-secondary.shadow-sm type="button" data-bs-dismiss="modal" Close
-          = f.submit "Save Expense", class:"btn btn-primary shadow-sm"
+  .modal-footer.justify-content-center
+    = f.submit "Save Expense", class: "btn btn-primary shadow-sm"
 
 script
   | document.addEventListener("DOMContentLoaded", function() {
@@ -99,7 +88,6 @@ script
   |   }
   |
   |   function addParticipantsToForm(e){
-  |     renderSplitTable();
   |     participantsContainer.innerHTML = "";
   |     var participants = getParticipants();
   |     participants.forEach(function(p,i){
