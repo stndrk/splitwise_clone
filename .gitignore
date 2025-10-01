@@ -1,0 +1,68 @@
+# Ignore bundler config
+/.bundle
+/vendor/bundle
+
+# Ignore Rails logs and temp files
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore PID files and server logs
+/pids/*
+/*.pid
+/*.pid.lock
+/*.log
+
+# Ignore Byebug command history file
+.byebug_history
+
+# Ignore node modules and Yarn files
+/node_modules
+/yarn-error.log
+/public/packs
+/public/packs-test
+/public/assets
+/.yarn-integrity
+/.pnp.*
+
+# Ignore dotenv environment variables
+.env
+.env.*.local
+
+# Ignore credentials and master key
+/config/credentials.yml.enc
+/config/master.key
+/config/credentials/*
+
+# Ignore coverage reports and temp files
+/coverage/
+/spec/tmp/
+/test/tmp/
+/tmp/
+
+# Ignore SQLite databases (if any)
+*.sqlite3
+*.sqlite3-journal
+
+# Ignore Mac/Windows system files
+.DS_Store
+Thumbs.db
+
+# Ignore VS Code and IDE settings
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Ignore log files
+*.log
+
+# Ignore precompiled assets
+/public/assets
+/public/packs
+/public/packs-test
+/public/packs-dev
+
+# Ignore any other local config files
+/local_env.yml
