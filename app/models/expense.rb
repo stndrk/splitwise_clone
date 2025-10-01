@@ -22,4 +22,8 @@ class Expense < ApplicationRecord
     end
     expense
   end
+
+  def total_amount
+    amount.to_f + tip.to_f + tax.to_f
+  end
 end

@@ -31,8 +31,10 @@ class User < ApplicationRecord
 
   # Total your friend owes you minus total you owe friend, considering settlements
   def net_balance_with(friend)
-    amount_friend_pay_current_usr = expenses.joins(:expense_splits).where(expense_splits: {user_id: friend.id}).sum("COALESCE(expense_splits.share, 0)").to_f
-    amount_current_usr_pay_friend = friend.expenses.joins(:expense_splits).where(expense_splits: {user_id: id}).sum("COALESCE(expense_splits.share, 0)").to_f
+    amount_friend_pay_current_usr = expenses.joins(:expense_splits).where(expense_splits: {user_id: friend.id})
+                                            .sum("COALESCE(expense_splits.share, 0)").to_f
+    amount_current_usr_pay_friend = friend.expenses.joins(:expense_splits).where(expense_splits: {user_id: id})
+                                          .sum("COALESCE(expense_splits.share, 0)").to_f
     settled_amount = Settlement.where(from_user_id: id, to_user_id: friend.id, status: "Success").sum(:amount) -
                      Settlement.where(from_user_id: friend.id, to_user_id: id, status: "Success").sum(:amount)
     amount_friend_pay_current_usr - amount_current_usr_pay_friend - settled_amount

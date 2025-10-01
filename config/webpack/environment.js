@@ -5,4 +5,10 @@ environment.plugins.append("Provide", new webpack.ProvidePlugin({
     jQuery: require.resolve('jquery'),
     Popper: ['popper.js', 'default']
   }))
+
+environment.loaders.get('sass').use.forEach(loader => {
+  if (loader.loader === 'postcss-loader') {
+    delete loader.options.config
+  }
+})
 module.exports = environment

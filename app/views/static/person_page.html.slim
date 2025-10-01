@@ -15,20 +15,41 @@
     .d-flex.justify-content-between.align-items-center.mb-4
       h1.mb-0 Profile
       .btn-group
-        button.btn.btn-secondary type="button" data-bs-toggle="modal" data-bs-target="#groupModal" Create Group
-        button.btn.btn-primary type="button" data-bs-toggle="modal" data-bs-target="#expenseModal" Add Expense
-        button.btn.btn-success type="button" data-bs-toggle="modal" data-bs-target="#settleUpModal" Settle Up
-
+        button.btn.btn-secondary type="button" data-bs-toggle="offcanvas" data-bs-target="#groupOffcanvas" 
+          | Create Group
+        button.btn.btn-primary type="button" data-bs-toggle="offcanvas" data-bs-target="#expenseOffcanvas"
+          | Add Expense
+        button.btn.btn-success type="button" data-bs-toggle="offcanvas" data-bs-target="#settleUpOffcanvas"
+          | Settle Up
     / Expenses container
     .card.shadow-sm
       .card-header.text-white style="background-color: #565e64;" Expenses
       .card-body#expenses-container
         = render partial: "layouts/expenses_list", locals: { expenses: @expenses, user_id: current_user.id }
 
-    / --- Render Modals ---
-    = render 'layouts/expense_form'
-    = render 'layouts/settleup_form'
-    = render 'layouts/group_form'
+    / --- Add Expense Offcanvas ---
+    #expenseOffcanvas.offcanvas.offcanvas-end style="top: 57px; width: 24%;" tabindex="-1" aria-labelledby="expenseOffcanvasLabel"
+      .offcanvas-header.bg-primary.text-white
+        h5#expenseOffcanvasLabel.offcanvas-title Add Expense
+        button.btn-close.text-reset type="button" data-bs-dismiss="offcanvas" aria-label="Close"
+      .offcanvas-body
+        = render 'layouts/expense_form'
+
+    / --- Settle Up Offcanvas ---
+    #settleUpOffcanvas.offcanvas.offcanvas-end style="top: 57px; width: 24%;" tabindex="-1" aria-labelledby="settleUpOffcanvasLabel"
+      .offcanvas-header.bg-success.text-white
+        h5#settleUpOffcanvasLabel.offcanvas-title Settle Up
+        button.btn-close.text-reset type="button" data-bs-dismiss="offcanvas" aria-label="Close"
+      .offcanvas-body
+        = render 'layouts/settleup_form'
+
+    / --- Group Form Offcanvas ---
+    #groupOffcanvas.offcanvas.offcanvas-end style="top: 57px; width: 24%;" tabindex="-1" aria-labelledby="groupOffcanvasLabel"
+      .offcanvas-header.bg-success.text-white
+        h5#groupOffcanvasLabel.offcanvas-title Group Form
+        button.btn-close.text-reset type="button" data-bs-dismiss="offcanvas" aria-label="Close"
+      .offcanvas-body
+        = render 'layouts/group_form'
 
   / CSS for active/inactive badges
   style
