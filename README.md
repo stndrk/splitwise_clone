@@ -98,3 +98,19 @@ bin/rails s
 - **Profile Section**: View expenses with friends wise, settle outstanding amounts, and manage groups.  
 
 This app makes it easy to track and manage shared expenses efficiently, keeping balances and settlements transparent for all users.
+
+
+### Login Page
+![Login Page](https://raw.githubusercontent.com/stndrk/splitwise_clone/main/public/login_page.png)
+
+### Signup Page
+![Signup Page](https://raw.githubusercontent.com/stndrk/splitwise_clone/main/public/signup_page.png)
+
+### Dashboard
+![Dashboard](https://raw.githubusercontent.com/stndrk/splitwise_clone/main/public/dasdboard_page.png)
+
+### Dashboard with Expense
+![Dashboard with Expense](https://raw.githubusercontent.com/stndrk/splitwise_clone/main/public/dashboard_page_with_expense.png)
+
+### Profile with Expense
+![Profile Page](https://raw.githubusercontent.com/stndrk/splitwise_clone/main/public/profile_page_with_expense.png)
